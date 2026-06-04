@@ -205,12 +205,12 @@ export default function DashboardHome() {
                       );
 
                       return (
-                        <div key={point.date} className="group relative flex flex-1 flex-col items-center justify-end">
-                          <div className="pointer-events-none absolute -top-7 z-10 hidden whitespace-nowrap rounded-lg bg-[#0D2420] px-2 py-1 text-xs font-semibold text-white shadow-lg group-hover:block">
+                        <div key={point.date} className="group relative flex h-full flex-1 flex-col items-center justify-end">
+                          <div className="pointer-events-none absolute -top-1 z-10 hidden whitespace-nowrap rounded-lg bg-[#0D2420] px-2 py-1 text-xs font-semibold text-white shadow-lg group-hover:block">
                             {point.total} vues
                           </div>
                           <div
-                            className="w-full rounded-t-[1rem] bg-gradient-to-t from-[#0D2420] to-[#2BE0B5] transition-all duration-150 group-hover:from-[#11342d] group-hover:to-[#5cf0d2]"
+                            className="w-full rounded-t-[0.6rem] bg-gradient-to-t from-[#0D2420] to-[#2BE0B5] transition-all duration-150 group-hover:from-[#11342d] group-hover:to-[#5cf0d2]"
                             style={{ height: `${height}%` }}
                           />
                         </div>
