@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hors-ligne — Backoffice</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0d2420;
+        color: #ecfffa;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        padding: 2rem;
+        text-align: center;
+      }
+      .card {
+        max-width: 26rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(43, 224, 181, 0.25);
+        border-radius: 1.5rem;
+        padding: 2.5rem 2rem;
+      }
+      .badge {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1.25rem;
+        border-radius: 18px;
+        background: #2be0b5;
+        color: #0d2420;
+        font-weight: 800;
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      h1 { font-size: 1.4rem; margin: 0 0 0.5rem; }
+      p { color: rgba(236, 255, 250, 0.7); line-height: 1.6; margin: 0 0 1.5rem; }
+      button {
+        background: #2be0b5;
+        color: #0d2420;
+        border: 0;
+        border-radius: 999px;
+        padding: 0.8rem 1.6rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="badge">MK</div>
+      <h1>Tu es hors-ligne</h1>
+      <p>
+        Impossible de joindre le serveur. Vérifie ta connexion : tes brouillons
+        enregistrés localement sont conservés et seront synchronisés au retour du
+        réseau.
+      </p>
+      <button onclick="location.reload()">Réessayer</button>
+    </div>
+  </body>
+</html>

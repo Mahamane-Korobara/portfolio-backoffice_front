@@ -418,6 +418,126 @@ select {
   box-shadow: var(--mk-shadow-soft);
 }
 
+.editor-shell .tiptap img.ProseMirror-selectednode {
+  outline: 3px solid var(--mk-cta);
+}
+
+/* Alignement de texte */
+.editor-shell .tiptap [style*="text-align: center"] {
+  text-align: center;
+}
+.editor-shell .tiptap [style*="text-align: right"] {
+  text-align: right;
+}
+
+/* Surlignage */
+.editor-shell .tiptap mark {
+  background: #fff1a8;
+  border-radius: 0.3rem;
+  padding: 0.05rem 0.2rem;
+  box-decoration-break: clone;
+}
+
+/* Listes de taches */
+.editor-shell .tiptap ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.2rem;
+}
+.editor-shell .tiptap ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+.editor-shell .tiptap ul[data-type="taskList"] li > label {
+  margin-top: 0.35rem;
+}
+.editor-shell .tiptap ul[data-type="taskList"] input[type="checkbox"] {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--mk-cta);
+}
+
+/* Tableaux */
+.editor-shell .tiptap table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.4rem 0;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  table-layout: fixed;
+}
+.editor-shell .tiptap table td,
+.editor-shell .tiptap table th {
+  border: 1px solid rgba(13, 36, 32, 0.12);
+  padding: 0.55rem 0.7rem;
+  vertical-align: top;
+  position: relative;
+}
+.editor-shell .tiptap table th {
+  background: var(--mk-mint-soft);
+  font-weight: 700;
+  text-align: left;
+}
+.editor-shell .tiptap table .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(43, 224, 181, 0.18);
+  pointer-events: none;
+}
+.editor-shell .tiptap .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--mk-cta);
+  cursor: col-resize;
+}
+
+/* Coloration syntaxique (lowlight / highlight.js) dans les blocs de code */
+.editor-shell .tiptap pre .hljs-comment,
+.editor-shell .tiptap pre .hljs-quote {
+  color: #7c8f8a;
+  font-style: italic;
+}
+.editor-shell .tiptap pre .hljs-keyword,
+.editor-shell .tiptap pre .hljs-selector-tag,
+.editor-shell .tiptap pre .hljs-literal,
+.editor-shell .tiptap pre .hljs-section,
+.editor-shell .tiptap pre .hljs-name {
+  color: #7ee0c4;
+}
+.editor-shell .tiptap pre .hljs-string,
+.editor-shell .tiptap pre .hljs-attr,
+.editor-shell .tiptap pre .hljs-regexp,
+.editor-shell .tiptap pre .hljs-addition {
+  color: #ffd479;
+}
+.editor-shell .tiptap pre .hljs-number,
+.editor-shell .tiptap pre .hljs-built_in,
+.editor-shell .tiptap pre .hljs-builtin-name,
+.editor-shell .tiptap pre .hljs-type {
+  color: #f8a978;
+}
+.editor-shell .tiptap pre .hljs-title,
+.editor-shell .tiptap pre .hljs-function .hljs-title,
+.editor-shell .tiptap pre .hljs-attribute {
+  color: #82d3ff;
+}
+.editor-shell .tiptap pre .hljs-variable,
+.editor-shell .tiptap pre .hljs-template-variable,
+.editor-shell .tiptap pre .hljs-tag,
+.editor-shell .tiptap pre .hljs-deletion {
+  color: #ff9aa2;
+}
+.editor-shell .tiptap pre .hljs-emphasis {
+  font-style: italic;
+}
+.editor-shell .tiptap pre .hljs-strong {
+  font-weight: 700;
+}
+
 .auth-orb {
   background: radial-gradient(circle at 20% 20%, rgba(43, 224, 181, 0.75), rgba(43, 224, 181, 0.15) 55%, transparent 70%);
   filter: blur(8px);

@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 import Editor from "@/components/Editor";
 import MediaPicker from "@/components/MediaPicker";
+import { useDraftAutosave } from "@/lib/hooks/useDraftAutosave";
 import { api, getPublicArticleUrl, resolveAssetUrl, resolveSiteUrl } from "@/lib/api";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -80,6 +81,13 @@ export default function ArticleEditorPage({ articleId }) {
   const [pickerMode, setPickerMode] = useState(null);
   const [scheduleAt, setScheduleAt] = useState("");
   const [slugTouched, setSlugTouched] = useState(!isCreate);
+
+  // Sauvegarde automatique locale (anti-perte, support hors-ligne mobile).
+  const draftKey = isCreate ? "new" : normalizedArticleId;
+  const { recoverable, savedAt, persist, clear, dismiss } = useDraftAutosave(
+    draftKey,
+    { enabled: isCreate || isEditableId }
+  );
 
   const publicArticleUrl = useMemo(
     () => getPublicArticleUrl(form.slug),
@@ -162,6 +170,23 @@ export default function ArticleEditorPage({ articleId }) {
       cancelled = true;
     };
   }, [isCreate, isEditableId, normalizedArticleId]);
+
+  // Persiste le brouillon en local à chaque modification (hors chargement).
+  useEffect(() => {
+    if (loading) return;
+    persist({ form, scheduleAt });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, scheduleAt, loading]);
+
+  const restoreDraft = () => {
+    if (!recoverable?.value) return;
+    if (recoverable.value.form) setForm(recoverable.value.form);
+    if (recoverable.value.scheduleAt !== undefined) {
+      setScheduleAt(recoverable.value.scheduleAt);
+    }
+    setSlugTouched(true);
+    dismiss();
+  };
 
   const setField = (field, value) => {
     setForm((current) => ({
@@ -250,6 +275,9 @@ export default function ArticleEditorPage({ articleId }) {
       const savedArticle = response?.data || response;
       const savedId = savedArticle?.id || normalizedArticleId;
 
+      // Enregistrement serveur réussi : on purge le brouillon local.
+      clear();
+
       if (mode === "publish") {
         await api.publishArticle(savedId);
       }
@@ -321,6 +349,40 @@ export default function ArticleEditorPage({ articleId }) {
         <div className="rounded-[1.5rem] border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-600">
           {error}
         </div>
+      ) : null}
+
+      {recoverable ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-[#2BE0B5]/40 bg-[#E7FBF5] px-5 py-4">
+          <p className="text-sm font-medium text-[#0D2420]">
+            Un brouillon local non enregistre a ete retrouve
+            {recoverable.savedAt
+              ? ` (${formatDate(new Date(recoverable.savedAt).toISOString())})`
+              : ""}
+            .
+          </p>
+          <div className="flex items-center gap-2">
+            <Button onClick={restoreDraft} className="rounded-full px-4">
+              Restaurer
+            </Button>
+            <Button
+              variant="outline"
+              onClick={dismiss}
+              className="rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
+            >
+              Ignorer
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
+      {savedAt ? (
+        <p className="text-xs font-medium text-[#3D5350]/70">
+          Brouillon enregistre localement a{" "}
+          {new Date(savedAt).toLocaleTimeString("fr-FR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
       ) : null}
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(320px,0.8fr)]">
