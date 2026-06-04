@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Check, ExternalLink, MessageSquare, ShieldAlert, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { api, getPublicArticleUrl } from "@/lib/api";
 import { buttonVariants } from "@/components/ui/button";
@@ -58,12 +59,23 @@ export default function CommentsPage() {
     };
   }, [page, status]);
 
-  const updateStatus = async (id, action) => {
-    if (action === "approve") await api.approveComment(id);
-    if (action === "spam") await api.spamComment(id);
-    if (action === "delete") await api.deleteComment(id);
+  const messages = {
+    approve: "Commentaire approuvé — il est désormais visible sur le blog.",
+    spam: "Commentaire marqué comme spam.",
+    delete: "Commentaire supprimé.",
+  };
 
-    setComments((current) => current.filter((comment) => comment.id !== id));
+  const updateStatus = async (id, action) => {
+    try {
+      if (action === "approve") await api.approveComment(id);
+      if (action === "spam") await api.spamComment(id);
+      if (action === "delete") await api.deleteComment(id);
+
+      setComments((current) => current.filter((comment) => comment.id !== id));
+      toast.success(messages[action]);
+    } catch (error) {
+      toast.error(error.message || "Action impossible. Réessaie.");
+    }
   };
 
   return (

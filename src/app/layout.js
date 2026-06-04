@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <PwaProvider />
-        <Toaster />
+        <Toaster position="bottom-right" richColors closeButton />
       </body>
     </html>
   );

@@ -11,6 +11,7 @@ import {
   LogOut,
   Menu,
   MessageSquare,
+  Plus,
   Settings,
   Users,
   X,
@@ -21,17 +22,33 @@ import { useAuthHydrated, useAuthStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-const navigation = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/articles", label: "Articles", icon: FileText },
-  { href: "/comments", label: "Commentaires", icon: MessageSquare },
-  { href: "/media", label: "Medias", icon: ImageIcon },
-  { href: "/subscribers", label: "Abonnes", icon: Users },
-  { href: "/settings", label: "Settings", icon: Settings },
+const navSections = [
+  {
+    title: "Pilotage",
+    items: [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+  },
+  {
+    title: "Contenu",
+    items: [
+      { href: "/articles", label: "Articles", icon: FileText },
+      { href: "/comments", label: "Commentaires", icon: MessageSquare },
+      { href: "/media", label: "Medias", icon: ImageIcon },
+    ],
+  },
+  {
+    title: "Audience",
+    items: [{ href: "/subscribers", label: "Abonnes", icon: Users }],
+  },
+  {
+    title: "Configuration",
+    items: [{ href: "/settings", label: "Reglages", icon: Settings }],
+  },
 ];
 
+const navItems = navSections.flatMap((section) => section.items);
+
 function getPageLabel(pathname) {
-  const match = navigation.find((item) =>
+  const match = navItems.find((item) =>
     pathname === item.href || pathname.startsWith(`${item.href}/`)
   );
 
@@ -105,44 +122,65 @@ export default function DashboardShell({ children }) {
           mobileOpen ? "translate-x-0" : "-translate-x-[110%]"
         )}
       >
-        <div className="flex items-center justify-between rounded-[1.6rem] border border-white/70 bg-white/70 px-4 py-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3D5350]/66">
-              Mahamane Korobara
-            </p>
-            <p className="mt-1 text-lg font-black tracking-tight text-[#0D2420]">
-              Backoffice
-            </p>
+        <div className="flex items-center justify-between rounded-[1.6rem] border border-white/70 bg-white/70 px-3 py-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0D2420] to-[#1f4d44] text-base font-black text-[#2BE0B5] shadow-[0_10px_24px_rgba(13,36,32,0.25)]">
+              MK
+            </div>
+            <div>
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#3D5350]/66">
+                Mahamane Korobara
+              </p>
+              <p className="text-base font-black tracking-tight text-[#0D2420]">
+                Backoffice
+              </p>
+            </div>
           </div>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#0D2420]/8 bg-white text-[#0D2420] md:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#0D2420]/8 bg-white text-[#0D2420] md:hidden"
             onClick={() => setMobileOpen(false)}
           >
             <X className="size-5" />
           </button>
         </div>
 
-        <nav className="mt-6 flex flex-1 flex-col gap-2">
-          {navigation.map((item) => {
-            const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
-            const Icon = item.icon;
+        <Link
+          href="/articles/new"
+          onClick={() => setMobileOpen(false)}
+          className="mt-5 inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0D2420] px-4 py-3 text-sm font-bold text-white shadow-[0_12px_28px_rgba(13,36,32,0.2)] transition hover:bg-[#11342d]"
+        >
+          <Plus className="size-4" />
+          Nouvel article
+        </Link>
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={cn("sidebar-link", active && "sidebar-link-active")}
-              >
-                <div className="sidebar-link-icon">
-                  <Icon className="size-4" />
-                </div>
-                <span className="font-semibold">{item.label}</span>
-              </Link>
-            );
-          })}
+        <nav className="mt-4 flex flex-1 flex-col overflow-y-auto pr-1">
+          {navSections.map((section) => (
+            <div key={section.title}>
+              <p className="sidebar-section">{section.title}</p>
+              <div className="flex flex-col gap-1.5">
+                {section.items.map((item) => {
+                  const active =
+                    pathname === item.href || pathname.startsWith(`${item.href}/`);
+                  const Icon = item.icon;
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn("sidebar-link", active && "sidebar-link-active")}
+                    >
+                      <div className="sidebar-link-icon">
+                        <Icon className="size-4" />
+                      </div>
+                      <span className="font-semibold">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         <div className="space-y-3 rounded-[1.6rem] border border-white/70 bg-white/78 p-4">

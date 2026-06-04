@@ -3,6 +3,7 @@
 import { useDeferredValue, useEffect, useState } from "react";
 import Link from "next/link";
 import { Edit3, ExternalLink, Eye, Globe, Plus, Search, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { api, getPublicArticleUrl } from "@/lib/api";
 import { buttonVariants } from "@/components/ui/button";
@@ -88,17 +89,28 @@ export default function ArticlesPage() {
       return;
     }
 
-    await api.deleteArticle(id);
-    refresh();
+    try {
+      await api.deleteArticle(id);
+      refresh();
+      toast.success("Article envoyé à la corbeille.");
+    } catch (error) {
+      toast.error(error.message || "Suppression impossible.");
+    }
   };
 
   const handlePublish = async (id, nextStatus) => {
-    if (nextStatus === "published") {
-      await api.publishArticle(id);
-    } else {
-      await api.unpublishArticle(id);
+    try {
+      if (nextStatus === "published") {
+        await api.publishArticle(id);
+        toast.success("Article publié — visible sur le blog.");
+      } else {
+        await api.unpublishArticle(id);
+        toast.success("Article repassé en brouillon.");
+      }
+      refresh();
+    } catch (error) {
+      toast.error(error.message || "Action impossible.");
     }
-    refresh();
   };
 
   return (

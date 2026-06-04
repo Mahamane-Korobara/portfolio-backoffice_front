@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { toast } from "sonner";
+
 import Editor from "@/components/Editor";
 import MediaPicker from "@/components/MediaPicker";
 import { useDraftAutosave } from "@/lib/hooks/useDraftAutosave";
@@ -289,6 +291,14 @@ export default function ArticleEditorPage({ articleId }) {
         await api.scheduleArticle(savedId, fromDateTimeLocalValue(scheduleAt));
       }
 
+      toast.success(
+        mode === "publish"
+          ? "Article publié — visible sur le blog."
+          : mode === "schedule"
+          ? "Publication programmée."
+          : "Article enregistré."
+      );
+
       if (isCreate) {
         router.replace(`/articles/${savedId}`);
         return;
@@ -300,6 +310,7 @@ export default function ArticleEditorPage({ articleId }) {
       setScheduleAt(toDateTimeLocalValue(freshArticle.scheduled_at));
     } catch (currentError) {
       setError(currentError.message || "Impossible d'enregistrer l'article.");
+      toast.error(currentError.message || "Impossible d'enregistrer l'article.");
     } finally {
       setSaving("");
     }
