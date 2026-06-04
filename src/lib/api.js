@@ -113,6 +113,19 @@ export const api = {
     }),
   logout: () => request("/logout", { method: "POST" }),
 
+  pushKey: () => request("/push/key"),
+  pushSubscribe: (subscription) =>
+    request("/push/subscribe", {
+      method: "POST",
+      body: JSON.stringify(subscription),
+    }),
+  pushUnsubscribe: (endpoint) =>
+    request("/push/unsubscribe", {
+      method: "POST",
+      body: JSON.stringify({ endpoint }),
+    }),
+  pushTest: () => request("/push/test", { method: "POST" }),
+
   stats: () => request("/stats"),
   statsSources: () => request("/stats/sources"),
   statsDevices: () => request("/stats/devices"),

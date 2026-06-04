@@ -1,5 +1,6 @@
 import "./globals.css";
 import PwaProvider from "@/components/pwa/PwaProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   applicationName: "MK Backoffice",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <PwaProvider />
+        <Toaster />
       </body>
     </html>
   );

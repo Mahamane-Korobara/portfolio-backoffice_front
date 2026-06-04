@@ -266,7 +266,7 @@ export default function DashboardHome() {
                             <p className="font-semibold text-[#0D2420]">
                               {formatCompactNumber(article.likes_count)}
                             </p>
-                            <p>Likes</p>
+                            <p>Reactions</p>
                           </div>
                           <div className="rounded-[1rem] bg-white px-3 py-2 ring-1 ring-[#0D2420]/8">
                             <p className="font-semibold text-[#0D2420]">

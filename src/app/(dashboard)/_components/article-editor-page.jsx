@@ -548,6 +548,49 @@ export default function ArticleEditorPage({ articleId }) {
             </div>
           </ShellPanel>
 
+          {!isCreate && article ? (
+            <ShellPanel className="p-5">
+              <div className="space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3D5350]/66">
+                  Engagement
+                </p>
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="rounded-[1.2rem] bg-[#F8FFFD] px-2 py-3">
+                    <p className="text-xl font-black text-[#0D2420]">
+                      {article.views_count ?? 0}
+                    </p>
+                    <p className="text-xs text-[#3D5350]/75">Vues</p>
+                  </div>
+                  <div className="rounded-[1.2rem] bg-[#F8FFFD] px-2 py-3">
+                    <p className="text-xl font-black text-[#0D2420]">
+                      {article.likes_count ?? 0}
+                    </p>
+                    <p className="text-xs text-[#3D5350]/75">Reactions</p>
+                  </div>
+                  <div className="rounded-[1.2rem] bg-[#F8FFFD] px-2 py-3">
+                    <p className="text-xl font-black text-[#0D2420]">
+                      {article.comments_count ?? 0}
+                    </p>
+                    <p className="text-xs text-[#3D5350]/75">Com.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {(article.reactions || []).map((r) => (
+                    <span
+                      key={r.type}
+                      title={r.label}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[#0D2420]/8 bg-white px-3 py-1.5 text-sm font-semibold text-[#0D2420]"
+                    >
+                      <span aria-hidden>{r.emoji}</span>
+                      {r.count}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </ShellPanel>
+          ) : null}
+
           <ShellPanel className="p-5">
             <div className="space-y-5">
               <div>

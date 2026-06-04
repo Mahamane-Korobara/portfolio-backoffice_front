@@ -231,7 +231,7 @@ export default function ArticlesPage() {
                           <p className="text-lg font-black text-[#0D2420]">
                             {formatCompactNumber(article.likes_count)}
                           </p>
-                          <p>Likes</p>
+                          <p>Reactions</p>
                         </div>
                         <div>
                           <p className="text-lg font-black text-[#0D2420]">
@@ -240,6 +240,23 @@ export default function ArticlesPage() {
                           <p>Com.</p>
                         </div>
                       </div>
+
+                      {(article.reactions || []).some((r) => r.count > 0) ? (
+                        <div className="mt-3 flex flex-wrap gap-1.5 border-t border-[#0D2420]/8 pt-3">
+                          {article.reactions
+                            .filter((r) => r.count > 0)
+                            .map((r) => (
+                              <span
+                                key={r.type}
+                                title={r.label}
+                                className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-[#0D2420] ring-1 ring-[#0D2420]/8"
+                              >
+                                <span aria-hidden>{r.emoji}</span>
+                                {formatCompactNumber(r.count)}
+                              </span>
+                            ))}
+                        </div>
+                      ) : null}
                     </div>
 
                     <div className="rounded-[1.35rem] border border-[#0D2420]/8 bg-white px-4 py-3">

@@ -15,6 +15,7 @@ import {
   ShellPanel,
   StatusBadge,
 } from "./dashboard-ui";
+import PushNotificationCard from "@/components/pwa/PushNotificationCard";
 
 function normalizeList(payload) {
   return Array.isArray(payload) ? payload : payload?.data || [];
@@ -158,6 +159,8 @@ export default function SettingsPage() {
           {error}
         </div>
       ) : null}
+
+      <PushNotificationCard />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(340px,0.7fr)]">
         <div className="space-y-6">

@@ -102,10 +102,39 @@ côté site public doit utiliser le même schéma (ex. `@tiptap/html`).
 > et nécessite HTTPS (ou `localhost`). Pour tester les notifications en local :
 > `next dev --experimental-https`.
 
+## Réactions (style réseaux sociaux)
+
+Les articles reçoivent des réactions emoji (👍 ❤️ 🔥 👏 😮 👌) — un visiteur peut
+laisser une réaction de chaque type, sans compte. La liste des types est définie
+côté API dans `config/reactions.php`. Le backoffice affiche le détail par emoji
+sur la liste d'articles et dans le panneau « Engagement » de l'éditeur.
+
+API publique : `POST /articles/{slug}/react` `{ "type": "fire" }`,
+`GET /articles/{slug}/reactions`.
+
+## Notifications push
+
+Le backoffice peut recevoir des notifications push (nouveau commentaire…), même
+fermé. Mise en route :
+
+1. **Backend** (`mon-api-backoffice`) :
+   ```bash
+   php artisan webpush:vapid     # génère la paire de clés VAPID
+   # → reporter VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY dans .env
+   php artisan migrate           # crée la table push_subscriptions
+   ```
+2. **Activer** : Réglages → « Notifications push » → *Activer* (la clé publique
+   est récupérée automatiquement via `GET /admin/push/key`). Bouton *Test* pour
+   vérifier.
+
+> Push et installation PWA nécessitent HTTPS (ou `localhost`) et le build de
+> production (`npm run build && npm start`).
+
 ## Backend associé
 
 API Laravel `mon-api-backoffice`. Points de configuration importants :
 
 - `APP_FRONTEND_URL` doit pointer vers l'URL publique du blog (utilisée pour les
   URLs canoniques, la prévisualisation, le JSON-LD et les redirections newsletter).
+- `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` pour les notifications push.
 - L'authentification admin se fait par token Bearer (Laravel Sanctum).
