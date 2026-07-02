@@ -138,6 +138,9 @@ export const api = {
   updateArticle: (id, data) =>
     request(`/articles/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteArticle: (id) => request(`/articles/${id}`, { method: "DELETE" }),
+  restoreArticle: (id) => request(`/articles/${id}/restore`, { method: "POST" }),
+  forceDeleteArticle: (id) =>
+    request(`/articles/${id}/force`, { method: "DELETE" }),
   publishArticle: (id) => request(`/articles/${id}/publish`, { method: "POST" }),
   unpublishArticle: (id) =>
     request(`/articles/${id}/unpublish`, { method: "POST" }),

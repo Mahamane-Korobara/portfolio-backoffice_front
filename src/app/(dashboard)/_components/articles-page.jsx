@@ -2,7 +2,7 @@
 
 import { useDeferredValue, useEffect, useState } from "react";
 import Link from "next/link";
-import { Edit3, ExternalLink, Eye, Globe, Plus, Search, Trash2 } from "lucide-react";
+import { Edit3, ExternalLink, Eye, Globe, Plus, RotateCcw, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { api, getPublicArticleUrl } from "@/lib/api";
@@ -23,6 +23,7 @@ const statusFilters = [
   { value: "published", label: "Publies" },
   { value: "draft", label: "Brouillons" },
   { value: "scheduled", label: "Programmes" },
+  { value: "trashed", label: "Corbeille" },
 ];
 
 export default function ArticlesPage() {
@@ -93,6 +94,34 @@ export default function ArticlesPage() {
       await api.deleteArticle(id);
       refresh();
       toast.success("Article envoyé à la corbeille.");
+    } catch (error) {
+      toast.error(error.message || "Suppression impossible.");
+    }
+  };
+
+  const handleRestore = async (id) => {
+    try {
+      await api.restoreArticle(id);
+      refresh();
+      toast.success("Article restauré.");
+    } catch (error) {
+      toast.error(error.message || "Restauration impossible.");
+    }
+  };
+
+  const handleForceDelete = async (id) => {
+    if (
+      !window.confirm(
+        "Supprimer DÉFINITIVEMENT cet article ? Cette action est irréversible."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await api.forceDeleteArticle(id);
+      refresh();
+      toast.success("Article supprimé définitivement.");
     } catch (error) {
       toast.error(error.message || "Suppression impossible.");
     }
@@ -189,6 +218,7 @@ export default function ArticlesPage() {
         <div className="grid gap-4">
           {articles.map((article) => {
             const publicUrl = getPublicArticleUrl(article.slug);
+            const isTrashed = Boolean(article.deleted_at);
 
             return (
               <ShellPanel key={article.id} className="p-5">
@@ -284,60 +314,90 @@ export default function ArticlesPage() {
                 </div>
 
                 <div className="mt-5 flex flex-wrap gap-2 border-t border-[#0D2420]/8 pt-5">
-                  <Link
-                    href={`/articles/${article.id}`}
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
-                    )}
-                  >
-                    Editer
-                    <Edit3 className="size-4" />
-                  </Link>
+                  {isTrashed ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => handleRestore(article.id)}
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
+                        )}
+                      >
+                        Restaurer
+                        <RotateCcw className="size-4" />
+                      </button>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handlePublish(
-                        article.id,
-                        article.status === "published" ? "draft" : "published"
-                      )
-                    }
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
-                    )}
-                  >
-                    {article.status === "published" ? "Depublier" : "Publier"}
-                    <Globe className="size-4" />
-                  </button>
+                      <button
+                        type="button"
+                        onClick={() => handleForceDelete(article.id)}
+                        className={cn(
+                          buttonVariants({ variant: "destructive" }),
+                          "rounded-full px-4"
+                        )}
+                      >
+                        Supprimer définitivement
+                        <Trash2 className="size-4" />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href={`/articles/${article.id}`}
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
+                        )}
+                      >
+                        Editer
+                        <Edit3 className="size-4" />
+                      </Link>
 
-                  {publicUrl ? (
-                    <Link
-                      href={publicUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={cn(
-                        buttonVariants({ variant: "outline" }),
-                        "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
-                      )}
-                    >
-                      Voir en ligne
-                      <ExternalLink className="size-4" />
-                    </Link>
-                  ) : null}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handlePublish(
+                            article.id,
+                            article.status === "published" ? "draft" : "published"
+                          )
+                        }
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
+                        )}
+                      >
+                        {article.status === "published" ? "Depublier" : "Publier"}
+                        <Globe className="size-4" />
+                      </button>
 
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(article.id)}
-                    className={cn(
-                      buttonVariants({ variant: "destructive" }),
-                      "rounded-full px-4"
-                    )}
-                  >
-                    Supprimer
-                    <Trash2 className="size-4" />
-                  </button>
+                      {publicUrl ? (
+                        <Link
+                          href={publicUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={cn(
+                            buttonVariants({ variant: "outline" }),
+                            "rounded-full border-[#0D2420]/8 bg-white px-4 text-[#0D2420]"
+                          )}
+                        >
+                          Voir en ligne
+                          <ExternalLink className="size-4" />
+                        </Link>
+                      ) : null}
+
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(article.id)}
+                        className={cn(
+                          buttonVariants({ variant: "destructive" }),
+                          "rounded-full px-4"
+                        )}
+                      >
+                        Supprimer
+                        <Trash2 className="size-4" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </ShellPanel>
             );
