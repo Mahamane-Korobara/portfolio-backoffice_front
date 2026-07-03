@@ -2,9 +2,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Palette, Plus, Save, Settings2, Tags, Trash2 } from "lucide-react";
+import { ImagePlus, Palette, Plus, Save, Settings2, Tags, Trash2 } from "lucide-react";
 
 import { API_BASE_URL, SITE_URL, api, resolveAssetUrl } from "@/lib/api";
+import MediaPicker from "@/components/MediaPicker";
 import { useAuthStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +39,25 @@ export default function SettingsPage() {
     cover_image: "",
     is_complete: false,
   });
+
+  // Cible de la médiathèque pour la cover de collection :
+  // "new" (formulaire de création) ou l'id d'une collection en édition.
+  const [coverPickerTarget, setCoverPickerTarget] = useState(null);
+
+  const handleCoverSelect = (asset) => {
+    if (coverPickerTarget === "new") {
+      setNewSeries((current) => ({ ...current, cover_image: asset.url }));
+    } else if (coverPickerTarget != null) {
+      setSeries((current) =>
+        current.map((item) =>
+          item.id === coverPickerTarget
+            ? { ...item, cover_image: asset.url }
+            : item
+        )
+      );
+    }
+    setCoverPickerTarget(null);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -386,17 +406,27 @@ export default function SettingsPage() {
                   placeholder="Description courte de la collection (visible par les visiteurs)"
                 />
                 <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_160px_auto]">
-                  <Input
-                    value={newSeries.cover_image}
-                    onChange={(event) =>
-                      setNewSeries((current) => ({
-                        ...current,
-                        cover_image: event.target.value,
-                      }))
-                    }
-                    className="h-11 rounded-2xl border-[#0D2420]/8 bg-white"
-                    placeholder="URL de cover"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setCoverPickerTarget("new")}
+                    className="flex h-11 items-center gap-2 overflow-hidden rounded-2xl border border-[#0D2420]/8 bg-white px-3 text-sm font-medium text-[#0D2420]"
+                  >
+                    {newSeries.cover_image ? (
+                      <>
+                        <img
+                          src={resolveAssetUrl(newSeries.cover_image)}
+                          alt=""
+                          className="h-7 w-10 shrink-0 rounded object-cover"
+                        />
+                        <span className="truncate">Changer la cover</span>
+                      </>
+                    ) : (
+                      <>
+                        <ImagePlus className="size-4 shrink-0" />
+                        <span className="truncate">Choisir une cover</span>
+                      </>
+                    )}
+                  </button>
                   <label className="flex items-center gap-2 rounded-2xl border border-[#0D2420]/8 bg-white px-4 text-sm font-medium text-[#0D2420]">
                     <input
                       type="checkbox"
@@ -471,20 +501,16 @@ export default function SettingsPage() {
                       />
 
                       <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_auto_auto]">
-                        <Input
-                          value={entry.cover_image || ""}
-                          onChange={(event) =>
-                            setSeries((current) =>
-                              current.map((item) =>
-                                item.id === entry.id
-                                  ? { ...item, cover_image: event.target.value }
-                                  : item
-                              )
-                            )
-                          }
-                          className="h-11 rounded-2xl border-[#0D2420]/8 bg-white"
-                          placeholder="URL de cover"
-                        />
+                        <button
+                          type="button"
+                          onClick={() => setCoverPickerTarget(entry.id)}
+                          className="flex h-11 items-center gap-2 overflow-hidden rounded-2xl border border-[#0D2420]/8 bg-white px-3 text-sm font-medium text-[#0D2420]"
+                        >
+                          <ImagePlus className="size-4 shrink-0" />
+                          <span className="truncate">
+                            {entry.cover_image ? "Changer la cover" : "Choisir une cover"}
+                          </span>
+                        </button>
                         <label className="flex items-center gap-2 rounded-2xl border border-[#0D2420]/8 bg-white px-4 text-sm font-medium text-[#0D2420]">
                           <input
                             type="checkbox"
@@ -574,6 +600,15 @@ export default function SettingsPage() {
           </ShellPanel>
         </div>
       </div>
+
+      {coverPickerTarget != null ? (
+        <MediaPicker
+          title="Cover de la collection"
+          description="Choisis une image dans ta médiathèque (ou uploade-en une)."
+          onSelect={handleCoverSelect}
+          onClose={() => setCoverPickerTarget(null)}
+        />
+      ) : null}
     </div>
   );
 }
