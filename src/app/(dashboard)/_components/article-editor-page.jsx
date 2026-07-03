@@ -430,16 +430,22 @@ export default function ArticleEditorPage({ articleId }) {
 
                 <div className="space-y-2">
                   <label className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3D5350]/66">
-                    Serie order
+                    Épisode
                   </label>
                   <Input
                     value={form.series_order}
                     onChange={(event) => setField("series_order", event.target.value)}
                     className="h-12 rounded-2xl border-[#0D2420]/8 bg-white"
-                    placeholder="1"
+                    placeholder="Auto"
                     type="number"
                     min="1"
+                    disabled={!form.series_id}
                   />
+                  <p className="text-[11px] text-[#3D5350]/66">
+                    {form.series_id
+                      ? "Laisser vide = épisode suivant attribué automatiquement."
+                      : "Choisis d'abord une collection."}
+                  </p>
                 </div>
               </div>
 
@@ -633,20 +639,29 @@ export default function ArticleEditorPage({ articleId }) {
 
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3D5350]/66">
-                  Serie
+                  Collection
                 </label>
                 <select
                   value={form.series_id}
-                  onChange={(event) => setField("series_id", event.target.value)}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setField("series_id", value);
+                    // Changement de collection : on réinitialise l'épisode pour
+                    // laisser le backend attribuer le prochain numéro.
+                    if (value !== form.series_id) setField("series_order", "");
+                  }}
                   className="h-12 w-full rounded-2xl border border-[#0D2420]/8 bg-white px-4 text-sm text-[#0D2420]"
                 >
-                  <option value="">Aucune serie</option>
+                  <option value="">Aucune collection</option>
                   {series.map((item) => (
                     <option key={item.id} value={item.id}>
                       {item.title}
                     </option>
                   ))}
                 </select>
+                <p className="text-[11px] text-[#3D5350]/66">
+                  Transférer l&apos;article : change simplement de collection ci-dessus.
+                </p>
               </div>
 
               <div className="space-y-3">

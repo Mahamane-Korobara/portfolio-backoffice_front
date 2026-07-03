@@ -141,7 +141,7 @@ export default function SettingsPage() {
   };
 
   const deleteSeries = async (id) => {
-    if (!window.confirm("Supprimer cette serie ?")) return;
+    if (!window.confirm("Supprimer cette collection ?")) return;
     await api.deleteSeries(id);
     setSeries((current) => current.filter((item) => item.id !== id));
   };
@@ -151,7 +151,7 @@ export default function SettingsPage() {
       <PageHero
         eyebrow="Parametres"
         title="Taxonomies et configuration"
-        description="Tout ce qui structure ton contenu: categories, tags, series et rappel des URLs cles du projet."
+        description="Tout ce qui structure ton contenu: categories, tags, collections et rappel des URLs cles du projet."
       />
 
       {error ? (
@@ -356,7 +356,7 @@ export default function SettingsPage() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#3D5350]/66">
-                    Series
+                    Collections
                   </p>
                   <h2 className="mt-2 text-2xl font-black text-[#0D2420]">
                     Collections d&apos;articles
@@ -372,7 +372,7 @@ export default function SettingsPage() {
                     setNewSeries((current) => ({ ...current, title: event.target.value }))
                   }
                   className="h-11 rounded-2xl border-[#0D2420]/8 bg-white"
-                  placeholder="Titre de la serie"
+                  placeholder="Titre de la collection"
                 />
                 <Textarea
                   value={newSeries.description}
@@ -383,7 +383,7 @@ export default function SettingsPage() {
                     }))
                   }
                   className="min-h-24 rounded-[1.4rem] border-[#0D2420]/8 bg-white"
-                  placeholder="Description courte de la serie"
+                  placeholder="Description courte de la collection (visible par les visiteurs)"
                 />
                 <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_160px_auto]">
                   <Input
@@ -408,7 +408,7 @@ export default function SettingsPage() {
                         }))
                       }
                     />
-                    Serie complete
+                    Collection complète
                   </label>
                   <Button
                     onClick={createSeries}
@@ -426,8 +426,8 @@ export default function SettingsPage() {
               ) : series.length === 0 ? (
                 <EmptyState
                   icon={Settings2}
-                  title="Aucune serie"
-                  description="Cree des series pour relier plusieurs billets autour d'un meme sujet."
+                  title="Aucune collection"
+                  description="Crée des collections pour regrouper plusieurs articles en épisodes autour d'un même sujet."
                 />
               ) : (
                 <div className="grid gap-4">
