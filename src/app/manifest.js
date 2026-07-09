@@ -1,10 +1,12 @@
 // Web App Manifest (Next.js App Router) — sert /manifest.webmanifest.
 // Permet l'installation du backoffice comme application (PWA) sur mobile/desktop.
 
+import { BRAND_NAME, BRAND_SHORT } from "@/lib/brand";
+
 export default function manifest() {
   return {
-    name: "Backoffice — Mahamane Korobara",
-    short_name: "MK Backoffice",
+    name: `Backoffice — ${BRAND_NAME}`,
+    short_name: `${BRAND_SHORT} Backoffice`,
     description:
       "Rédige et publie tes articles de blog depuis ton téléphone. Gestion des articles, médias, commentaires et abonnés.",
     id: "/dashboard",

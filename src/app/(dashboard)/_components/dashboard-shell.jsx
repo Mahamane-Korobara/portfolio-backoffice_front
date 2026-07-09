@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 
 import { SITE_URL, api } from "@/lib/api";
+import { BRAND_NAME, BRAND_SHORT } from "@/lib/brand";
 import { useAuthHydrated, useAuthStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -127,11 +128,11 @@ export default function DashboardShell({ children }) {
         <div className="flex items-center justify-between rounded-[1.6rem] border border-white/70 bg-white/70 px-3 py-3">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0D2420] to-[#1f4d44] text-base font-black text-[#2BE0B5] shadow-[0_10px_24px_rgba(13,36,32,0.25)]">
-              MK
+              {BRAND_SHORT}
             </div>
             <div>
               <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#3D5350]/66">
-                Mahamane Korobara
+                {BRAND_NAME}
               </p>
               <p className="text-base font-black tracking-tight text-[#0D2420]">
                 Backoffice

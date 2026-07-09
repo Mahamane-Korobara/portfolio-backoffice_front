@@ -1,19 +1,19 @@
 import "./globals.css";
 import PwaProvider from "@/components/pwa/PwaProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { BRAND_NAME, BRAND_SHORT } from "@/lib/brand";
 
 export const metadata = {
-  applicationName: "MK Backoffice",
+  applicationName: `${BRAND_SHORT} Backoffice`,
   title: {
-    default: "Backoffice | Mahamane Korobara",
-    template: "%s | MK Backoffice",
+    default: `Backoffice | ${BRAND_NAME}`,
+    template: `%s | ${BRAND_SHORT} Backoffice`,
   },
-  description:
-    "Backoffice personnel pour piloter les articles, médias, commentaires et abonnés du portfolio de Mahamane Korobara.",
+  description: `Backoffice pour piloter les articles, projets, médias, commentaires et abonnés du portfolio de ${BRAND_NAME}.`,
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    title: "MK Backoffice",
+    title: `${BRAND_SHORT} Backoffice`,
     statusBarStyle: "black-translucent",
   },
   icons: {
