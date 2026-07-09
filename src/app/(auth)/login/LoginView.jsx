@@ -5,6 +5,7 @@ import { ArrowRight, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { api } from "@/lib/api";
+import { BRAND_NAME } from "@/lib/brand";
 import { useAuthHydrated, useAuthStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,18 +54,18 @@ export default function LoginView() {
       <div className="grid w-full max-w-6xl overflow-hidden rounded-[2.2rem] border border-white/80 bg-white/88 shadow-[0_32px_90px_rgba(13,36,32,0.12)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr]">
         <section className="dashboard-grid relative hidden border-r border-[#0D2420]/8 bg-[#F8FFFD] px-10 py-12 lg:flex lg:flex-col lg:justify-between">
           <div className="space-y-6">
-            <div className="eyebrow">Backoffice prive</div>
+            <div className="eyebrow">{BRAND_NAME} · Backoffice</div>
             <div className="space-y-4">
               <p className="font-serif text-2xl italic text-[#3D5350]">
-                Ton cockpit editorial
+                Ton espace d&apos;administration
               </p>
               <h1 className="dashboard-title max-w-xl font-black text-[#0D2420]">
-                Gere ton portfolio, tes articles et ton audience dans un seul espace.
+                Gere ton portfolio : articles, projets, medias et audience au meme endroit.
               </h1>
               <p className="max-w-lg text-base leading-8 text-[#3D5350]/82">
-                Ce dashboard reprend les codes visuels de ton hero section: fond clair,
-                accent menthe, typographie expressive et interface nette pour publier
-                vite sans perdre le fil.
+                Redige et publie tes articles et tes projets, gere les collections, les
+                medias, les commentaires et tes abonnes — le tout depuis une interface
+                nette, aussi bien sur mobile que sur ordinateur.
               </p>
             </div>
           </div>
@@ -80,8 +81,8 @@ export default function LoginView() {
                     Publication rapide
                   </p>
                   <p className="mt-1 text-sm leading-7 text-[#3D5350]/78">
-                    Cree, programme et publie tes billets sans passer d&apos;un outil a
-                    l&apos;autre.
+                    Cree, programme et publie articles et projets sans passer d&apos;un
+                    outil a l&apos;autre.
                   </p>
                 </div>
               </div>
@@ -120,7 +121,8 @@ export default function LoginView() {
                   Acceder au dashboard
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-[#3D5350]/80">
-                  Entre tes identifiants pour piloter le contenu du portfolio et le blog.
+                  Entre tes identifiants pour piloter les articles, les projets et les
+                  contenus de ton portfolio.
                 </p>
               </div>
             </div>

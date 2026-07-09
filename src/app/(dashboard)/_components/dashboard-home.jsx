@@ -90,8 +90,8 @@ export default function DashboardHome() {
     <div className="space-y-6">
       <PageHero
         eyebrow="Vue globale"
-        title="Ton backoffice editorial"
-        description="Un point d'entree clair pour suivre l'activite du blog, publier de nouveaux contenus et garder un oeil sur la moderation."
+        title="Ton backoffice"
+        description="Un point d'entree clair pour suivre l'activite du portfolio et du blog, publier articles et projets, et garder un oeil sur la moderation."
         actions={
           <>
             <Link
@@ -99,6 +99,16 @@ export default function DashboardHome() {
               className={cn(buttonVariants(), "rounded-full px-5")}
             >
               Nouvel article
+            </Link>
+            <Link
+              href="/projects/new"
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "rounded-full border-[#0D2420]/8 bg-white px-5 text-[#0D2420]"
+              )}
+            >
+              Nouveau projet
+              <FolderKanban className="size-4" />
             </Link>
             {SITE_URL ? (
               <Link
