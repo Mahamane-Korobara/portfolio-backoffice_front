@@ -1,12 +1,21 @@
-# MK Backoffice — Dashboard éditorial PWA
+# Backoffice — Dashboard éditorial & portfolio (PWA)
 
-Backoffice (panneau d'administration) pour gérer un blog : rédaction d'articles
-riches, médias, commentaires, abonnés newsletter et statistiques. Conçu comme
-une **PWA** : installable sur mobile/desktop pour rédiger depuis le téléphone,
-avec coque hors-ligne et sauvegarde automatique des brouillons.
+Backoffice (panneau d'administration) pour piloter un **portfolio + blog** :
+
+- **Articles** riches (éditeur TipTap), **collections** (séries d'épisodes)
+- **Projets / réalisations** (galerie, vidéo, épinglage sur la home)
+- **Médias**, **commentaires**, **abonnés newsletter**, **statistiques**
+- **CV téléchargeable** remplaçable en un clic
+
+Conçu comme une **PWA** : installable sur mobile/desktop pour gérer depuis le
+téléphone, avec coque hors-ligne et sauvegarde automatique des brouillons.
 
 Il consomme l'API admin d'un backend Laravel (`/api/v1/admin`). Le site public
 (portfolio/blog) consomme la partie publique de la même API.
+
+> **Réutilisable** : aucune donnée ni identité n'est codée en dur. Pour
+> t'approprier ce back-office, tu ne modifies que le `.env` (voir
+> [Réutiliser ce projet](#réutiliser-ce-projet)).
 
 ## Stack
 
@@ -31,9 +40,15 @@ npm run dev                  # http://localhost:3000
 
 | Variable | Rôle |
 |---|---|
-| `NEXT_PUBLIC_API_URL` | Base de l'API admin Laravel (sans slash final) |
-| `NEXT_PUBLIC_SITE_URL` | URL publique du blog (liens « voir l'article », prévisualisation) |
+| `NEXT_PUBLIC_API_URL` | Base de l'API admin Laravel (sans slash final), pointe vers `/api/v1/admin` |
+| `NEXT_PUBLIC_SITE_URL` | URL publique du portfolio/blog (liens « voir l'article/projet », prévisualisation) |
+| `NEXT_PUBLIC_BRAND_NAME` | Nom affiché (sidebar, titres, manifeste PWA). Ex. `"Mahamane Korobara"` |
+| `NEXT_PUBLIC_BRAND_SHORT` | Initiales du logo (optionnel, sinon dérivées du nom). Ex. `"MK"` |
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | (Optionnel) clé publique VAPID pour les notifications push |
+
+> Toutes les variables sont **publiques** (préfixe `NEXT_PUBLIC_`, inlinées au
+> build). Ne jamais y mettre de secret. Sur Vercel : *Settings → Environment
+> Variables* puis redéployer.
 
 ## Scripts
 
@@ -50,18 +65,22 @@ npm run dev                  # http://localhost:3000
 src/
 ├── app/
 │   ├── (auth)/login/          # Connexion admin
-│   ├── (dashboard)/           # Espace protégé (articles, médias, commentaires…)
-│   │   ├── _components/        # Vues du dashboard
+│   ├── (dashboard)/           # Espace protégé
+│   │   ├── articles/           # Liste + éditeur d'articles
+│   │   ├── projects/           # Liste + éditeur de projets (galerie, vidéo, épinglage)
+│   │   ├── _components/        # Vues du dashboard (dont projects-page, project-editor-page)
 │   │   └── layout.js           # Garde d'authentification (DashboardShell)
 │   ├── layout.js               # Métadonnées + viewport PWA + PwaProvider
 │   └── manifest.js             # Web App Manifest (PWA)
 ├── components/
 │   ├── Editor.jsx              # Éditeur TipTap complet
-│   ├── MediaPicker.jsx         # Bibliothèque média / upload
+│   ├── MediaPicker.jsx         # Bibliothèque média / upload (images + vidéos)
+│   ├── CvManagerCard.jsx       # Gestion du CV (upload + aperçu inline)
 │   ├── pwa/PwaProvider.jsx     # Enregistrement SW + invite d'installation
 │   └── ui/                     # Composants shadcn
 ├── lib/
 │   ├── api.js                  # Client HTTP de l'API admin
+│   ├── brand.js                # Identité de marque (lue depuis le .env)
 │   ├── store.js                # Auth (Zustand + persist)
 │   ├── editor/lowlight.js      # Langages de coloration syntaxique
 │   └── hooks/useDraftAutosave.js
@@ -129,6 +148,23 @@ fermé. Mise en route :
 
 > Push et installation PWA nécessitent HTTPS (ou `localhost`) et le build de
 > production (`npm run build && npm start`).
+
+## Réutiliser ce projet
+
+Ce back-office est un **template**. Pour l'utiliser pour ton propre
+portfolio, aucune ligne de code à toucher :
+
+1. `cp .env.example .env.local`
+2. Renseigne :
+   - `NEXT_PUBLIC_API_URL` → ton API Laravel (`.../api/v1/admin`)
+   - `NEXT_PUBLIC_SITE_URL` → l'URL de ton portfolio public
+   - `NEXT_PUBLIC_BRAND_NAME` / `NEXT_PUBLIC_BRAND_SHORT` → ton nom / tes initiales
+3. `npm run build` (ou déploie sur Vercel avec ces variables)
+
+L'identité (nom dans la sidebar, titres d'onglet, manifeste PWA) est lue depuis
+`src/lib/brand.js`, qui dérive tout du `.env`. Côté backend, l'identité SEO et
+les origines CORS sont pareillement pilotées par le `.env` (voir le README du
+back).
 
 ## Backend associé
 
