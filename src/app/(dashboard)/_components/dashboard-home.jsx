@@ -6,6 +6,7 @@ import {
   BarChart3,
   Eye,
   FileText,
+  FolderKanban,
   Globe2,
   Monitor,
   MessageSquare,
@@ -128,7 +129,7 @@ export default function DashboardHome() {
         </div>
       ) : stats ? (
         <>
-          <div className="grid gap-4 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <MetricCard
               icon={<TrendingUp className="size-5" />}
               label="Vues ce mois"
@@ -142,6 +143,13 @@ export default function DashboardHome() {
               value={formatCompactNumber(stats.articles.published)}
               helper={`${formatCompactNumber(stats.articles.total)} articles en tout`}
               tone="dark"
+            />
+            <MetricCard
+              icon={<FolderKanban className="size-5" />}
+              label="Projets publies"
+              value={formatCompactNumber(stats.projects?.published ?? 0)}
+              helper={`${formatCompactNumber(stats.projects?.total ?? 0)} projets en tout`}
+              tone="violet"
             />
             <MetricCard
               icon={<MessageSquare className="size-5" />}

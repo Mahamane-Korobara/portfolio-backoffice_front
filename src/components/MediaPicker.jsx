@@ -214,7 +214,7 @@ export default function MediaPicker({
         </Button>
       </div>
 
-      <div className="grid flex-1 gap-0 lg:grid-cols-[minmax(0,1fr)_19rem]">
+      <div className="grid min-h-0 flex-1 gap-0 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_19rem]">
         <div className="min-h-[28rem] border-b border-[#0D2420]/8 p-5 lg:border-r lg:border-b-0">
           {loading ? (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">

@@ -48,6 +48,7 @@ const metricToneMap = {
   dark: "from-[#0D2420] via-[#1A2E2A] to-[#213A35] text-white",
   warm: "from-[#FFE8C7] via-[#FFF3E1] to-white text-[#7A4B00]",
   blue: "from-[#DBEAFE] via-[#EFF6FF] to-white text-[#1D4ED8]",
+  violet: "from-[#EDE9FE] via-[#F5F3FF] to-white text-[#6D28D9]",
 };
 
 export function MetricCard({ icon, label, value, helper, tone = "mint" }) {
