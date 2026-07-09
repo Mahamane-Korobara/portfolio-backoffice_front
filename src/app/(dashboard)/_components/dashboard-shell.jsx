@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   ExternalLink,
   FileText,
+  FolderKanban,
   Image as ImageIcon,
   LayoutDashboard,
   LogOut,
@@ -31,6 +32,7 @@ const navSections = [
     title: "Contenu",
     items: [
       { href: "/articles", label: "Articles", icon: FileText },
+      { href: "/projects", label: "Projets", icon: FolderKanban },
       { href: "/comments", label: "Commentaires", icon: MessageSquare },
       { href: "/media", label: "Medias", icon: ImageIcon },
     ],

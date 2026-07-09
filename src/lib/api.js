@@ -105,6 +105,11 @@ export function getPublicArticleUrl(slug) {
   return resolveSiteUrl(`/blog/${slug}`);
 }
 
+export function getPublicProjectUrl(slug) {
+  if (!slug) return null;
+  return resolveSiteUrl(`/projets/${slug}`);
+}
+
 export const api = {
   login: (email, password) =>
     request("/login", {
@@ -179,6 +184,22 @@ export const api = {
   updateSeries: (id, data) =>
     request(`/series/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteSeries: (id) => request(`/series/${id}`, { method: "DELETE" }),
+
+  projects: (params = {}) => request(withQuery("/projects", params)),
+  project: (id) => request(`/projects/${id}`),
+  createProject: (data) =>
+    request("/projects", { method: "POST", body: JSON.stringify(data) }),
+  updateProject: (id, data) =>
+    request(`/projects/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteProject: (id) => request(`/projects/${id}`, { method: "DELETE" }),
+  restoreProject: (id) => request(`/projects/${id}/restore`, { method: "POST" }),
+  forceDeleteProject: (id) =>
+    request(`/projects/${id}/force`, { method: "DELETE" }),
+  publishProject: (id) => request(`/projects/${id}/publish`, { method: "POST" }),
+  unpublishProject: (id) =>
+    request(`/projects/${id}/unpublish`, { method: "POST" }),
+  pinProject: (id) => request(`/projects/${id}/pin`, { method: "POST" }),
+  unpinProject: (id) => request(`/projects/${id}/unpin`, { method: "POST" }),
 
   subscribers: (params = {}) => request(withQuery("/subscribers", params)),
   deleteSubscriber: (id) => request(`/subscribers/${id}`, { method: "DELETE" }),
