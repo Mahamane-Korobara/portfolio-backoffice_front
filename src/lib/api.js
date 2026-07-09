@@ -203,4 +203,7 @@ export const api = {
 
   subscribers: (params = {}) => request(withQuery("/subscribers", params)),
   deleteSubscriber: (id) => request(`/subscribers/${id}`, { method: "DELETE" }),
+
+  cv: () => request("/cv"),
+  uploadCv: (formData) => request("/cv", { method: "POST", body: formData }),
 };

@@ -17,6 +17,7 @@ import {
   StatusBadge,
 } from "./dashboard-ui";
 import PushNotificationCard from "@/components/pwa/PushNotificationCard";
+import CvManagerCard from "@/components/CvManagerCard";
 
 function normalizeList(payload) {
   return Array.isArray(payload) ? payload : payload?.data || [];
@@ -181,6 +182,8 @@ export default function SettingsPage() {
       ) : null}
 
       <PushNotificationCard />
+
+      <CvManagerCard />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(340px,0.7fr)]">
         <div className="space-y-6">
